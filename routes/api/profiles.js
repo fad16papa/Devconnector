@@ -7,6 +7,7 @@ const config = require("config");
 
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const Post = require("../../models/Post");
 const { remove } = require("../../models/Profile");
 
 //@route GET api/profile/me
@@ -28,15 +29,17 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
-//@route POST api/profile/me
+//@route POST api/profile/
 //@desc  Create or update user profile
 //@access Private
 router.post(
   "/",
   [
     auth,
-    check("status", "Status is required").not().isEmpty(),
-    check("skills", "Skill is required").not().isEmpty(),
+    [
+      check("status", "Status is required").not().isEmpty(),
+      check("skills", "Skills is required").not().isEmpty(),
+    ],
   ],
 
   async (req, res) => {
@@ -149,7 +152,7 @@ router.get("/user/:user_id", async (req, res) => {
 router.delete("/", auth, async (req, res) => {
   try {
     //Remove user posts
-
+    await Post.deleteMany({ user: req.user.id });
     //Remove user profile
     await Profile.findOneAndRemove({ user: req.user.id });
     //Remove user
@@ -336,10 +339,6 @@ router.get("/github/:username", (req, res) => {
       if (response.statusCode !== 200) {
         return res.status(404).json({ msg: "No github profile found" });
       }
-      if (Object.keys(req.body).length === 0) {
-        return res.status(404).json({ msg: "No github profile found" });
-      }
-
       return res.json(JSON.parse(body));
     });
   } catch (error) {
