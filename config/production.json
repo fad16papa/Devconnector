@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://fad16papa:Sixteen@16@devconnector.etmw1.mongodb.net/<dbname>?retryWrites=true&w=majority",
+  "jwtSecret": "fadthegreattoken",
+  "githubclientId": "5b93d9b9ffb47208acb0",
+  "githubclientsecret": "45f333259db6d446fb7995720da1fa6507bbed80"
+}
